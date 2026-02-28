@@ -10,5 +10,4 @@
 ### Server
 * Node
 * Prisma
-* Docker
 * PostgreSQL(online) 
