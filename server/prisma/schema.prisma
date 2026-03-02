@@ -8,8 +8,20 @@ datasource db {
 }
 
 model User{
-  id Int
-  email String
-    
-    
+  id Int @unique
+  email String @unique
+  name String
+}
+
+model Booking{
+  id Int @unique
+  booked_date Int
+  appoitment_date Int
+  comment String?     
+}
+
+model Service{
+  id Int @unique
+  type_service String
+  comment String?
 }
