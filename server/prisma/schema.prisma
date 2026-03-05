@@ -8,20 +8,21 @@ datasource db {
 }
 
 model User{
-  id Int @unique
+  id Int @unique @default(autoincrement())
   email String @unique
   name String
 }
 
 model Booking{
-  id Int @unique
+  id Int @unique @default(autoincrement())
   booked_date Int
   appoitment_date Int
   comment String?     
 }
 
 model Service{
-  id Int @unique
+  id Int @unique @default(autoincrement())
   type_service String
   comment String?
 }
+
