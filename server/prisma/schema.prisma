@@ -5,6 +5,7 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
+  // url:process.env("DATABASE_URL")
 }
 
 model User{
@@ -15,8 +16,8 @@ model User{
 
 model Booking{
   id Int @unique @default(autoincrement())
-  booked_date Int
-  appoitment_date Int
+  booked_date String
+  appoitment_date String
   comment String?     
 }
 
