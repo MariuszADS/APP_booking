@@ -8,26 +8,35 @@ async function main() {
         data: [
             { email: "adam@gmail.com", name: "Adam" },
             { email: "krzysiek@gmail.com", name: "Krzysztof" }
-        ]
+        ],
+        skipDuplicates:true
     })
 
     await prisma.service.createMany({
         data: [
-            { type_service: "Hair cut", comment: "30min" },
-            { type_service: "Beard cut" }
-        ]
+            { name: "Hair cut", comment: "30min", },
+            { name: "Beard cut" }
+        ],
+        skipDuplicates:true
     })
 
-    await prisma.booking.create({
+    await prisma.booking.createMany({
         data:
-            { booked_date: "24.11.2026", appoitment_date: "26.11.2026", comment: "i can be late around 5min" }
-
+            [
+                {
+                    date: new Date(),
+                    comment: "i can be late around 5min",
+                    userId:1,
+                    serviceId:1
+                },
+                
+            ],
+            skipDuplicates:true
     })
 }
 
 main()
 
-    .then()
     .then(async () => {
         await prisma.$disconnect();
 

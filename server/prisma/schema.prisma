@@ -5,25 +5,23 @@ generator client {
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-  // url:process.env("DATABASE_URL")
 }
 
-model User{
-  id Int @unique @default(autoincrement())
+model User {
+  id    Int    @unique @default(autoincrement())
   email String @unique
-  name String
+  name  String
 }
 
-model Booking{
-  id Int @unique @default(autoincrement())
-  booked_date String
-  appoitment_date String
-  comment String?     
-}
-
-model Service{
-  id Int @unique @default(autoincrement())
+model Service {
+  id           Int     @unique @default(autoincrement())
   type_service String
-  comment String?
+  comment      String?
 }
 
+model Booking {
+  id              Int     @unique @default(autoincrement())
+  booked_date     String
+  appoitment_date String
+  comment         String?
+}
