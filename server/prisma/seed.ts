@@ -14,8 +14,8 @@ async function main() {
 
     await prisma.service.createMany({
         data: [
-            { name: "Hair cut", comment: "30min", },
-            { name: "Beard cut" }
+            { name: "Hair cut", comment: "30min"}
+            
         ],
         skipDuplicates:true
     })
