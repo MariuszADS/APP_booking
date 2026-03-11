@@ -1,48 +1,75 @@
 import { PrismaClient } from "@prisma/client";
 
-const prisma = new PrismaClient()
+const prisma = new PrismaClient();
 
 async function main() {
 
-    await prisma.user.createMany({
-        data: [
-            { email: "adam@gmail.com", name: "Adam" },
-            { email: "krzysiek@gmail.com", name: "Krzysztof" }
-        ],
-        skipDuplicates:true
-    })
+  // USERS
+  await prisma.user.createMany({
+    data: [
+      {
+        email: "adam@gmail.com",
+        name: "Adam",
+      },
+      {
+        email: "krzysiek@gmail.com",
+        name: "Krzysztof",
+      },
+    ],
+    skipDuplicates: true,
+  });
 
-    await prisma.service.createMany({
-        data: [
-            { name: "Hair cut", comment: "30min"}
-            
-        ],
-        skipDuplicates:true
-    })
+  // SERVICES
+  await prisma.service.createMany({
+    data: [
+      {
+        name: "Men haircut",
+        comment: "30 minutes",
+      },
+      {
+        name: "Beard trimming",
+        comment: "15 minutes",
+      },
+      {
+        name: "Hair + beard",
+        comment: "45 minutes",
+      },
+    ],
+    skipDuplicates: true,
+  });
 
-    await prisma.booking.createMany({
-        data:
-            [
-                {
-                    date: new Date(),
-                    comment: "i can be late around 5min",
-                    userId:1,
-                    serviceId:1
-                },
-                
-            ],
-            skipDuplicates:true
-    })
+  // BOOKINGS
+  await prisma.booking.createMany({
+    data: [
+      {
+        date: new Date("2026-11-15T10:00:00Z"),
+        comment: "I can be late around 5 min",
+        userId: 1,
+        serviceId: 1,
+      },
+      {
+        date: new Date("2026-11-16T12:30:00Z"),
+        comment: null,
+        userId: 2,
+        serviceId: 2,
+      },
+      {
+        date: new Date("2026-11-17T14:00:00Z"),
+        comment: "Please be quick",
+        userId: 1,
+        serviceId: 3,
+      },
+    ],
+    skipDuplicates: true,
+  });
+
 }
 
 main()
-
-    .then(async () => {
-        await prisma.$disconnect();
-
-    })
-    .catch(async (e) => {
-        console.error(e);
-        await prisma.$disconnect();
-
-    });
+  .then(async () => {
+    await prisma.$disconnect();
+  })
+  .catch(async (e) => {
+    console.error(e);
+    await prisma.$disconnect();
+  });
