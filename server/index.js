@@ -3,7 +3,10 @@ import prisma from "./db/prismaClient.ts";
 import express from "express"
 import cors from "cors"
 import helmet from "helmet"
-
+import { json } from "node:stream/consumers";
+import { getBooking } from "./controllers/booking_controller.js";
+import { logger } from "./middleware/logger.middleware.js";
+import { errorHandler } from "./middleware/error.middleware.js";
 
 const port = 8000
 const app = express()
@@ -18,20 +21,18 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
-app.get("/api/users", async (req, res) => {
-    const users = await prisma.user.findMany()
-    res.json(users)
+app.use(express.json())
+
+app.get("/welcome_page", (req, res) => {
+    res.send("<p>Welcome page!</p>")
 })
 
-app.get("/services",async(req,res)=>{
-    const services = await prisma.service.findMany()
-    await res.json(services)
-})
+app.use("/service_date_time_booking", getBooking)
 
-app.get("/booking",async (req,res)=>{
-    const booking = await prisma.booking.findMany()
-    res.json(booking)
-})
+app.use(logger)
+
+app.use(errorHandler)
+// app.use("/booking_details")
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
