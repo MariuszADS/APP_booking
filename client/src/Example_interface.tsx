@@ -5,9 +5,8 @@ function Example_interface() {
 
   return (
     <>
-    <div className="bg-red-500 text-white p-4">
-
-    </div>
+      <div className="bg-red-600">
+      </div>
     </>
   )
 }
