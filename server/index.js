@@ -1,5 +1,5 @@
 import http from "node:http"
-import prisma from "./db/prismaClient.ts";
+import prisma from "./db/prismaClient.js";
 import express from "express"
 import cors from "cors"
 import helmet from "helmet"
@@ -23,15 +23,21 @@ app.use(cors({
 
 app.use(express.json())
 
-app.get("/welcome_page", (req, res) => {
+app.get("/api/starting_page", (req, res) => {
     res.send("<p>Welcome page!</p>")
 })
 
-app.use("/service_date_time_booking", getBooking)
+app.use("/api/services", getBooking)
+// app.use("/api/services:id")
 
 app.use(logger)
 
-app.use(errorHandler)
+// app.use((err, req, res, next) => {
+//   console.error(err.stack)
+//   res.status(500).send('Something broke!')
+// })
+
+// app.use(errorHandler)
 // app.use("/booking_details")
 
 app.listen(port, () => {

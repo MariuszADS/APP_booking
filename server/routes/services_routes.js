@@ -3,7 +3,7 @@ import { getBooking } from "../controllers/booking_controller"
 
 const router = express.Router()
 // create endpoint | getBooking not in used
-router.get("/service_date_time_booking", getBooking, (res, req) => {
+router.get("/api/services", getBooking, (res, req) => {
     res.send("<p>service_date_time_booking page!</p>")
 })
 

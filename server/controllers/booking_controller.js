@@ -9,6 +9,7 @@ export const getBooking = async (res,req)=>{
         // response getting by json() method
         res.json(booking)
     }
+    //catching server err
     catch(error){
         res.status(500).json({error:"error server"})
     }
