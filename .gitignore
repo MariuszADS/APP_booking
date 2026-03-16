@@ -10,6 +10,7 @@ node_modules
 !.vscode/extensions.json
 xyz.txt
 start_from.txt
+err_status.txt
 
 #DB
 .env
