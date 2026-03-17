@@ -5,8 +5,8 @@ import cors from "cors"
 import helmet from "helmet"
 import { json } from "node:stream/consumers";
 import { getBooking } from "./controllers/booking_controller.js";
-import { logger } from "./middleware/logger.middleware.js";
-import { errorHandler } from "./middleware/error.middleware.js";
+import { logger } from "./middleware/logger_middleware.js";
+import { errorHandler } from "./middleware/error_middleware.js";
 import connectDB from "./db"
 
 const port = 8000
@@ -27,6 +27,7 @@ app.use(cors({
 //body parsing middleware => ???
 app.use(express.json())
 
+//MOVE
 app.get("/api/starting_page", (req, res) => {
     res.send("<p>Welcome page!</p>")
 })
@@ -36,10 +37,6 @@ app.use("/api/services", getBooking)
 
 app.use(logger)
 
-// app.use((err, req, res, next) => {
-//   console.error(err.stack)
-//   res.status(500).send('Something broke!')
-// })
 
 // app.use(errorHandler)
 // app.use("/booking_details")
