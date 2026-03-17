@@ -7,9 +7,12 @@ import { json } from "node:stream/consumers";
 import { getBooking } from "./controllers/booking_controller.js";
 import { logger } from "./middleware/logger.middleware.js";
 import { errorHandler } from "./middleware/error.middleware.js";
+import connectDB from "./db"
 
 const port = 8000
 const app = express()
+
+connectDB();
 
 // Security middleware
 app.use(helmet())
@@ -21,12 +24,13 @@ app.use(cors({
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
+//body parsing middleware => ???
 app.use(express.json())
 
 app.get("/api/starting_page", (req, res) => {
     res.send("<p>Welcome page!</p>")
 })
-
+//API routes
 app.use("/api/services", getBooking)
 // app.use("/api/services:id")
 
