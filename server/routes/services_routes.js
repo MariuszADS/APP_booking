@@ -3,16 +3,16 @@ import express from "express"
 
 const router = express.Router()
 // create endpoint | getBooking not in used
-router.get("/api/services", (res, req) => {
+router.get("/services", (res, req) => {
     res.json({ httpMethod: "get" })
 })
-router.post("/api/services", (res, req) => {
+router.post("/services", (res, req) => {
     res.json({ httpMethod: "post" })
 })
-router.put("/api/services", (res, req) => {
+router.put("/services", (res, req) => {
     res.json({ httpMethod: "put" })
 })
-router.delete("/api/services", (res, req) => {
+router.delete("/services", (res, req) => {
     res.json({ httpMethod: "delete" })
 })
 

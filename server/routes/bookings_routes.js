@@ -2,7 +2,7 @@ import express from "express"
 
 const router = express.Router()
 
-router.get("/api/bookings_details", (res, req) => {
+router.get("/bookings_details", (res, req) => {
     res.json({ httpMethod: "get" })
 })
 

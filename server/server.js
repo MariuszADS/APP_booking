@@ -1,13 +1,14 @@
-import http from "node:http"
-import prisma from "./db/prismaClient.js";
+// import http from "node:http"
+// import prisma from "./db/prismaClient.js";
 import express from "express"
 import cors from "cors"
 import helmet from "helmet"
-import { json } from "node:stream/consumers";
+// import { json } from "node:stream/consumers";
 import { getBooking } from "./controllers/booking_controller.js";
 import { logger } from "./middleware/logger_middleware.js";
-import { errorHandler } from "./middleware/error_middleware.js";
-import connectDB from "./db"
+// import { errorHandler } from "./middleware/error_middleware.js";
+import { connectDB } from "./db/prismaClient.js"
+
 
 const port = 8000
 const app = express()
@@ -20,26 +21,31 @@ app.use(helmet())
 //CORS config
 app.use(cors({
     origin: 'http://localhost:5173',
-    methods: ['GET', 'POST'],
-    allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
 //body parsing middleware => ???
 app.use(express.json())
 
-//MOVE
-app.get("/api/starting_page", (req, res) => {
+//test toute
+app.get("/welcome", (req, res) => {
     res.send("<p>Welcome page!</p>")
 })
+
+//404 error handler
+app.use((req, res) => {
+    res.status(404).json({ message: "not found" })
+})
+
+// err server handler 
+
+app.use((err, req, res, next) => { console.error(err.stack) 
+    res.status(500).json({message:"Something went wrong"})
+})
+
 //API routes
-app.use("/api/services", getBooking)
-// app.use("/api/services:id")
-
 app.use(logger)
+app.use("/services", getBooking)
 
-
-// app.use(errorHandler)
-// app.use("/booking_details")
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)

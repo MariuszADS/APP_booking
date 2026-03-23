@@ -3,6 +3,6 @@ import express from "express"
 
 const app = express()
 
-app.get("/api/services/:id", (req,res)=>{
+app.get("/services/:id", (req,res)=>{
     // getBooking()
 })
