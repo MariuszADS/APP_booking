@@ -11,6 +11,7 @@ node_modules
 xyz.txt
 start_from.txt
 err_status.txt
+URL,Query&Path_Paramethers.txt
 
 #DB
 .env

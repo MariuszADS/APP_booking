@@ -2,18 +2,20 @@ import express from "express"
 
 const router = express.Router()
 
-router.get("/bookings_details", (res, req) => {
-    res.json({ httpMethod: "get" })
+router.get("/", (req, res) => {
+    res.json({ action: "GET all bookings" })
 })
 
-// router.post("/api/bookings_details", (req, res) => {
-//     res.json({ httpMethod: "post" })
-// })
+router.get("/:id", (req, res) => {
+    res.json({ action: "GET booking", id: req.params.id })
+})
 
-// router.put("/api/bookings_details", (req, res) => {
-//     res.json({ httpMethod: "put" })
-// })
+router.post("/", (req, res) => {
+    res.json({ action: "CREATE booking" })
+})
 
-// router.delete("/api/bookings_details", (req, res) => {
-//     res.json({ httpMethod: "delete" })
-// })
+router.delete("/:id", (req, res) => {
+    res.json({ action: "DELETE booking", id: req.params.id })
+})
+
+export default router

@@ -1,19 +1,30 @@
 import express from "express"
-// import { getBooking } from "../controllers/booking_controller"
 
 const router = express.Router()
-// create endpoint | getBooking not in used
-router.get("/services", (res, req) => {
-    res.json({ httpMethod: "get" })
+
+// GET /services → wszystkie
+router.get("/", (req, res) => {
+    res.json({ action: "GET all services" })
 })
-router.post("/services", (res, req) => {
-    res.json({ httpMethod: "post" })
+
+// GET /services/:id → jeden
+router.get("/:id", (req, res) => {
+    res.json({ action: "GET one service", id: req.params.id })
 })
-router.put("/services", (res, req) => {
-    res.json({ httpMethod: "put" })
+
+// POST /services → create
+router.post("/", (req, res) => {
+    res.json({ action: "CREATE service", body: req.body })
 })
-router.delete("/services", (res, req) => {
-    res.json({ httpMethod: "delete" })
+
+// PUT /services/:id → update
+router.put("/:id", (req, res) => {
+    res.json({ action: "UPDATE service", id: req.params.id })
+})
+
+// DELETE /services/:id → delete
+router.delete("/:id", (req, res) => {
+    res.json({ action: "DELETE service", id: req.params.id })
 })
 
 export default router
