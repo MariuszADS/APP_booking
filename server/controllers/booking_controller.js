@@ -9,4 +9,39 @@ export const getBooking = async (req, res) => {
     }
 };
 
-export default getBooking;
+export const getSingleBooking = async (req, res) => {
+    try {
+        const booking = await prisma.booking.findUnique({ where: { id: 1} })
+        //below is the right pathern of handling single user/id/booking
+        // const booking = await prisma.booking.findUnique({ where: { id: Number(req.params.id)} })
+        res.json(booking)
+    }
+    catch (error) {
+        res.status(500).json({ message: error.message })
+    }
+
+}
+//TO_FIX
+export const createBooking = async(req,res)=>{
+    try{
+        const booking = await prisma.booking.create({data:req.body})
+        res.status(201).json(booking)
+        console.log("CREATED",booking)
+        res.status(201).json(booking)
+    }
+    catch(error){
+        res.status(500).json({message:error.message})
+    }
+}
+//NOT CHECKED
+export const deleteBooking = async (req,res)=>{
+    //user/booking has to be specify for instance { name: "Bob", email: "bob@prisma.io" }
+   try{
+       const booking = await prisma.booking.delete({where:{id:1}})
+        res.status(201).json(booking)
+        console.log("DELETED",booking);
+    }
+    catch(error){
+        res.status(500).json({message:error.message})
+    }
+}
