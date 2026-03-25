@@ -33,6 +33,17 @@ export const createBooking = async(req,res)=>{
         res.status(500).json({message:error.message})
     }
 }
+
+export const editBooking = async(req,res)=>{
+    try{
+        const booking = prisma.booking.update()
+        res.json(booking)
+    }
+    catch(error){
+        res.status(500).json({message:error.message})
+    }
+}
+
 //NOT CHECKED
 export const deleteBooking = async (req,res)=>{
     //user/booking has to be specify for instance { name: "Bob", email: "bob@prisma.io" }
