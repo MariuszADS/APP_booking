@@ -23,7 +23,12 @@ export const getSingleService = async (req, res) => {
 
 export const createService = async (req, res) => {
     try {
-        const service = prisma.service.create()
+        const service = prisma.service.create({
+            data: {
+                name: req.body.name,
+                comment: req.body.comment
+            }
+        })
         res.json(service)
     }
     catch (error) {
@@ -33,7 +38,12 @@ export const createService = async (req, res) => {
 
 export const editService = async (req, res) => {
     try {
-        const service = prisma.service.update()
+        const service = await prisma.service.update({
+            where: {
+                name: req.body.name,
+                comment: req.body.comment
+            }
+        })
         res.josn(service)
     }
     catch (error) {
@@ -43,7 +53,13 @@ export const editService = async (req, res) => {
 
 export const deleteService = async (req, res) => {
     try {
-        const service = prisma.service.delete()
+        const service = await prisma.service.delete({
+            where: {
+                name: req.body.name,
+                comment: req.body.comment
+            }
+
+        })
         res.json(service)
     }
     catch (error) {

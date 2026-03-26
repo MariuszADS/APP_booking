@@ -18,13 +18,11 @@ app.use(express.json())
 app.use(logger)
 /*SERVICE */
 app.use("/services", getService)
-//output is not Single
 app.use("/services/:id", getSingleService)
-//TO_FIX:add params
 app.use("/services", createService)
-//not checked if it works,add params
+//not checked if it works,added params
 app.use("/service", deleteService)
-// add params
+//not checked if it works,added params
 app.use("/service", editService)
 
 /*BOOKING */
