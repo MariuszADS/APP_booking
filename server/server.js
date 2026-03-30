@@ -16,38 +16,38 @@ app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(helmet())
 app.use(express.json())
 app.use(logger)
-/*SERVICE */
-app.get("/services", getService)
-app.get("/services/:id", getSingleService)
-app.use("/services", createService)
-//not checked if it works,added params
-app.use("/service", deleteService)
-//not checked if it works,added params
-app.use("/service", editService)
-
-/*BOOKING */
-app.get("/booking", getBooking)
-app.get("/booking/:id", getSingleBooking)
-// add params
-app.get("/booking", createBooking)
-// add params
-// app.use("/booking", deleteBooking)
-// add params
-app.use("/booking", editBooking)
-
-/*test toute*/
-app.get("/welcome", (req, res) => {
-    res.send("<p>Welcome page!</p>")
-})
-/*404 error handler */
+//404 error handler
 app.use((req, res) => {
     res.status(404).json({ message: "not found" })
 })
-/*err server handler  */
+//err server handler
 app.use((err, req, res, next) => {
     console.error(err.stack)
     res.status(500).json({ message: "Something went wrong" })
 })
+/*SERVICE */
+app.get("/services", getService)
+app.get("/services/:id", getSingleService)
+app.post("/services", createService)
+app.delete("/service", deleteService)
+//not checked if it works,added params
+app.put("/service", editService)
+
+/*BOOKING */
+app.get("/booking", getBooking)
+app.get("/booking/:id", getSingleBooking)
+// fix
+app.post("/booking", createBooking)
+// add params
+// app.use("/booking", deleteBooking)
+// add params
+app.put("/booking", editBooking)
+
+/*test toute*/
+// app.get("/welcome", (req, res) => {
+//     res.send("<p>Welcome page!</p>")
+// })
+
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
