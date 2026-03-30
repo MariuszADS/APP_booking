@@ -9,17 +9,25 @@ export const getService = async (req, res) => {
     catch (error) {
         res.status(500).json({ message: error.message })
     }
+    console.log("GET ALL", req.params.id);
 }
 export const getSingleService = async (req, res) => {
     try {
-        const service = await prisma.service.findUnique({ where: { id: 1 } })
-        res.json(service)
-        console.log("GET");
+        const id = Number(req.params.id);
+        const service = await prisma.service.findUnique({
+            where: { id }
+        });
+
+        if (!service) {
+            return res.status(404).json({ message: "Service not found" });
+        }
+
+        res.json(service);
+    } catch (error) {
+        res.status(500).json({ message: error.message });
     }
-    catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-}
+    console.log("GET SINGLE", req.params.id);
+};
 
 export const createService = async (req, res) => {
     try {

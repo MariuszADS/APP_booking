@@ -17,8 +17,8 @@ app.use(helmet())
 app.use(express.json())
 app.use(logger)
 /*SERVICE */
-app.use("/services", getService)
-app.use("/services/:id", getSingleService)
+app.get("/services", getService)
+app.get("/services/:id", getSingleService)
 app.use("/services", createService)
 //not checked if it works,added params
 app.use("/service", deleteService)
@@ -26,8 +26,8 @@ app.use("/service", deleteService)
 app.use("/service", editService)
 
 /*BOOKING */
-app.use("/booking", getBooking)
-app.use("/booking/:id", getSingleBooking)
+app.get("/booking", getBooking)
+app.get("/booking/:id", getSingleBooking)
 // add params
 app.use("/booking", createBooking)
 // add params

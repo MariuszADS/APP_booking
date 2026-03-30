@@ -3,12 +3,12 @@ import express from "express"
 const router = express.Router()
 
 // GET /services → wszystkie
-router.get("/", (req, res) => {
+router.get("/services", (req, res) => {
     res.json({ action: "GET all services" })
 })
 
 // GET /services/:id → jeden
-router.get("/:id", (req, res) => {
+router.get("/services/:id", (req, res) => {
     res.json({ action: "GET one service", id: req.params.id })
 })
 

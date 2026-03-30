@@ -2,11 +2,11 @@ import express from "express"
 
 const router = express.Router()
 
-router.get("/", (req, res) => {
+router.get("/booking", (req, res) => {
     res.json({ action: "GET all bookings" })
 })
 
-router.get("/:id", (req, res) => {
+router.get("/booking/:id", (req, res) => {
     res.json({ action: "GET booking", id: req.params.id })
 })
 
