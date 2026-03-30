@@ -13,6 +13,7 @@ export const getService = async (req, res) => {
 }
 export const getSingleService = async (req, res) => {
     try {
+        console.log("PARAMS",req.params);
         const id = Number(req.params.id);
         const service = await prisma.service.findUnique({
             where: { id }
@@ -31,7 +32,8 @@ export const getSingleService = async (req, res) => {
 
 export const createService = async (req, res) => {
     try {
-        const service = prisma.service.create({
+        console.log("BODY:", req.body);
+        const service = await prisma.service.create({
             data: {
                 name: req.body.name,
                 comment: req.body.comment

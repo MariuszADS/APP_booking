@@ -13,7 +13,7 @@ router.get("/services/:id", (req, res) => {
 })
 
 // POST /services → create
-router.post("/", (req, res) => {
+router.post("/service", (req, res) => {
     res.json({ action: "CREATE service", body: req.body })
 })
 

@@ -25,14 +25,21 @@ export const getSingleBooking = async (req, res) => {
     catch (error) {
         res.status(500).json({ message: error.message })
     }
-
+    console.log(req.body);
 }
 //TO_FIX
 export const createBooking = async (req, res) => {
     try {
-        const booking = await prisma.booking.create({ data: req.body })
-        res.status(201).json(booking)
-        console.log("CREATED", booking)
+        console.log("BODY:", req.body);
+        const booking = await prisma.booking.create({
+            data: {
+                userId: req.body.userId,
+                serviceId: req.body.serviceId,
+                date: new Date(req.body.date),
+                comment: req.body.comment || null
+            }
+        })
+        console.log("CREATE BOOKING");
         res.status(201).json(booking)
     }
     catch (error) {
@@ -61,4 +68,5 @@ export const deleteBooking = async (req, res) => {
     catch (error) {
         res.status(500).json({ message: error.message })
     }
+    console.log("DELETED BOOKING");
 }

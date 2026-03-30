@@ -29,9 +29,9 @@ app.use("/service", editService)
 app.get("/booking", getBooking)
 app.get("/booking/:id", getSingleBooking)
 // add params
-app.use("/booking", createBooking)
+app.get("/booking", createBooking)
 // add params
-app.use("/booking", deleteBooking)
+// app.use("/booking", deleteBooking)
 // add params
 app.use("/booking", editBooking)
 
