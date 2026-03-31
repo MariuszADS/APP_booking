@@ -16,10 +16,6 @@ app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(helmet())
 app.use(express.json())
 app.use(logger)
-//404 error handler
-app.use((req, res) => {
-    res.status(404).json({ message: "not found" })
-})
 //err server handler
 app.use((err, req, res, next) => {
     console.error(err.stack)
@@ -29,9 +25,9 @@ app.use((err, req, res, next) => {
 app.get("/services", getService)
 app.get("/services/:id", getSingleService)
 app.post("/services", createService)
-app.delete("/service", deleteService)
+app.delete("/services", deleteService)
 //not checked if it works,added params
-app.put("/service", editService)
+app.put("/services", editService)
 
 /*BOOKING */
 app.get("/booking", getBooking)
@@ -45,9 +41,14 @@ app.put("/booking", editBooking)
 
 /*test toute*/
 // app.get("/welcome", (req, res) => {
-//     res.send("<p>Welcome page!</p>")
-// })
-
-app.listen(port, () => {
-    console.log(`Example app listening on port ${port}`)
-})
+    //     res.send("<p>Welcome page!</p>")
+    // })
+    
+    app.listen(port, () => {
+        console.log(`Example app listening on port ${port}`)
+    })
+    //404 error handler
+    app.use((req, res) => {
+        res.status(404).json({ message: "not found" })
+    })
+    
