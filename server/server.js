@@ -2,7 +2,7 @@ import express from "express"
 import cors from "cors"
 import helmet from "helmet"
 import { getBooking, getSingleBooking, createBooking, deleteBooking, editBooking } from "./controllers/booking_controller.js";
-import { getService, getSingleService, createService, editService, deleteService } from "./controllers/service_controller.js";
+import { getService, getSingleService, createService, deleteService } from "./controllers/service_controller.js";
 import { logger } from "./middleware/logger_middleware.js";
 import { connectDB } from "./db/prismaClient.js"
 
@@ -25,9 +25,9 @@ app.use((err, req, res, next) => {
 app.get("/services", getService)
 app.get("/services/:id", getSingleService)
 app.post("/services", createService)
-app.delete("/services", deleteService)
-//not checked if it works,added params
-app.put("/services", editService)
+app.delete("/services/:id", deleteService)
+//not in use temporary
+// app.put("/services", editService)
 
 /*BOOKING */
 app.get("/booking", getBooking)

@@ -9,11 +9,11 @@ export const getService = async (req, res) => {
     catch (error) {
         res.status(500).json({ message: error.message })
     }
-    console.log("GET ALL", req.params.id);
+    console.log("GET ALL");
 }
 export const getSingleService = async (req, res) => {
     try {
-        console.log("PARAMS",req.params);
+        console.log("PARAMS", req.params);
         const id = Number(req.params.id);
         const service = await prisma.service.findUnique({
             where: { id }
@@ -46,34 +46,36 @@ export const createService = async (req, res) => {
     }
 }
 
-export const editService = async (req, res) => {
-    try {
-        const service = await prisma.service.update({
-            where: {
-                name: req.body.name,
-                comment: req.body.comment
-            }
-        })
-        res.josn(service)
-    }
-    catch (error) {
-        res.status(500).json({ message: error.message })
-    }
-}
+// export const editService = async (req, res) => {
+//     try {
+//         const service = await prisma.service.update({
+//             where: {
+//                 name: req.body.name,
+//                 comment: req.body.comment
+//             }
+//         })
+//         res.josn(service)
+//     }
+//     catch (error) {
+//         res.status(500).json({ message: error.message })
+//     }
+// }
 
 export const deleteService = async (req, res) => {
     try {
+        const id = Number(req.params.id)
         const service = await prisma.service.delete({
-            where: {
-                name: req.body.name,
-                comment: req.body.comment
-            }
-
+            where: { id }
         })
+        if (!service) {
+            return res.status(404).json({ message: "service not found" })
+        }
         res.json(service)
     }
     catch (error) {
         res.status(500).json({ message: error.message })
     }
+    console.log("ID", req.params.id);
+
 }
 
