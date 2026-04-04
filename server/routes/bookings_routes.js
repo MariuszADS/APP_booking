@@ -17,5 +17,8 @@ router.post("/", (req, res) => {
 router.delete("/:id", (req, res) => {
     res.json({ action: "DELETE booking", id: req.params.id })
 })
+router.put("/:id", (req, res) => {
+    res.json({action: "Edited booking", id: req.params.id})
+})
 
 export default router

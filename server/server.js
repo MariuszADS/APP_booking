@@ -35,7 +35,7 @@ app.get("/booking/:id", getSingleBooking)
 app.post("/booking", createBooking)
 app.delete("/booking/:id", deleteBooking)
 // add params
-// app.put("/booking", editBooking)
+app.put("/booking/:id", editBooking)
 
 /*test toute*/
 // app.get("/welcome", (req, res) => {
