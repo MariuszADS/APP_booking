@@ -32,12 +32,10 @@ app.delete("/services/:id", deleteService)
 /*BOOKING */
 app.get("/booking", getBooking)
 app.get("/booking/:id", getSingleBooking)
-// fix
 app.post("/booking", createBooking)
+app.delete("/booking/:id", deleteBooking)
 // add params
-// app.use("/booking", deleteBooking)
-// add params
-app.put("/booking", editBooking)
+// app.put("/booking", editBooking)
 
 /*test toute*/
 // app.get("/welcome", (req, res) => {

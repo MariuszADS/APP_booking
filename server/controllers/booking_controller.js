@@ -7,6 +7,7 @@ export const getBooking = async (req, res) => {
     } catch (error) {
         res.status(500).json({ message: error.message });
     }
+    console.log("GET ALL");
 };
 
 export const getSingleBooking = async (req, res) => {
@@ -27,7 +28,7 @@ export const getSingleBooking = async (req, res) => {
     }
     console.log(req.body);
 }
-//TO_FIX
+
 export const createBooking = async (req, res) => {
     try {
         console.log("BODY:", req.body);
@@ -39,12 +40,12 @@ export const createBooking = async (req, res) => {
                 comment: req.body.comment || null
             }
         })
-        console.log("CREATE BOOKING");
         res.status(201).json(booking)
     }
     catch (error) {
         res.status(500).json({ message: error.message })
     }
+    console.log("CREATE BOOKING");
 }
 
 export const editBooking = async (req, res) => {
@@ -57,13 +58,19 @@ export const editBooking = async (req, res) => {
     }
 }
 
-//NOT CHECKED
+
 export const deleteBooking = async (req, res) => {
-    //user/booking has to be specify for instance { name: "Bob", email: "bob@prisma.io" }
     try {
-        const booking = await prisma.booking.delete({ where: { id: 1 } })
-        res.status(201).json(booking)
-        console.log("DELETED", booking);
+        const id = Number(req.params.id)
+        console.log("PARAMS:", req.params)
+        const booking = await prisma.booking.findUnique({ where: { id } })
+
+        if (!booking) {
+            return res.status(404).json({ message: "Booking not found" })
+        }
+        const deleteBooking = await prisma.booking.delete({where:{id}})
+        res.status(200).json(deleteBooking)
+
     }
     catch (error) {
         res.status(500).json({ message: error.message })
