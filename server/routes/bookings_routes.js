@@ -1,5 +1,5 @@
 import express from "express"
-import {isAdmin} from "../middleware/users_roles"
+import {isAdmin,ownerShip} from "../middleware/users_roles"
 
 const router = express.Router()
 
@@ -7,11 +7,11 @@ router.get("/", isAdmin, (req, res) => {
     res.json({ action: "GET all bookings" })
 })
 
-router.get("/:id", isAdmin, (req, res) => {
+router.get("/:id",ownerShip, (req, res) => {
     res.json({ action: "GET booking", id: req.params.id })
 })
 
-router.post("/", (req, res) => {
+router.post("/",ownerShip, (req, res) => {
     res.json({ action: "CREATE booking" })
 })
 

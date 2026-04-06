@@ -17,6 +17,7 @@ app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(helmet())
 app.use(express.json())
 app.use(logger)
+
 //err server handler
 app.use((err, req, res, next) => {
     console.error(err.stack)
@@ -27,8 +28,6 @@ app.get("/services", getService)
 app.get("/services/:id", getSingleService)
 app.post("/services", createService)
 app.delete("/services/:id", deleteService)
-// next
-// app.put("/services", editService)
 
 /*BOOKING */
 app.get("/booking", getBooking)
@@ -37,12 +36,11 @@ app.post("/booking", createBooking)
 app.delete("/booking/:id", deleteBooking)
 app.put("/booking/:id", editBooking)
 
-    
-    app.listen(port, () => {
-        console.log(`Example app listening on port ${port}`)
-    })
-    //404 error handler
-    app.use((req, res) => {
-        res.status(404).json({ message: "not found" })
-    })
-    
+
+app.listen(port, () => {
+    console.log(`Example app listening on port ${port}`)
+})
+//404 error handler
+app.use((req, res) => {
+    res.status(404).json({ message: "not found" })
+})
