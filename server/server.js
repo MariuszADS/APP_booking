@@ -6,6 +6,7 @@ import { getService, getSingleService, createService, deleteService } from "./co
 import { logger } from "./middleware/logger_middleware.js";
 import { connectDB } from "./db/prismaClient.js"
 
+
 const port = 8000
 const app = express()
 
@@ -26,7 +27,7 @@ app.get("/services", getService)
 app.get("/services/:id", getSingleService)
 app.post("/services", createService)
 app.delete("/services/:id", deleteService)
-//not in use temporary
+// next
 // app.put("/services", editService)
 
 /*BOOKING */
@@ -34,13 +35,8 @@ app.get("/booking", getBooking)
 app.get("/booking/:id", getSingleBooking)
 app.post("/booking", createBooking)
 app.delete("/booking/:id", deleteBooking)
-// add params
 app.put("/booking/:id", editBooking)
 
-/*test toute*/
-// app.get("/welcome", (req, res) => {
-    //     res.send("<p>Welcome page!</p>")
-    // })
     
     app.listen(port, () => {
         console.log(`Example app listening on port ${port}`)
