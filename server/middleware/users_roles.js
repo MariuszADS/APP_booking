@@ -1,10 +1,11 @@
-import prisma from "../db/prismaClient"
+import prisma from "../db/prismaClient.js"
 
 
 const isAdmin = (req, res, next) => {
     if (req.user.role !== "admin") {
         return res.status(403).json({ message: "Frobidden" })
     }
+    console.log("Req handled by admin");
     next()
 }
 
@@ -31,3 +32,5 @@ const ownerShip = async (req, res, next) => {
 }
 
 export { isAdmin, ownerShip }
+
+// middleware users_roles.js is not handling methods REST, it doesn't see roles(admin,user)

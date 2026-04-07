@@ -5,6 +5,7 @@ import { getBooking, getSingleBooking, createBooking, deleteBooking, editBooking
 import { getService, getSingleService, createService, deleteService } from "./controllers/service_controller.js";
 import { logger } from "./middleware/logger_middleware.js";
 import { connectDB } from "./db/prismaClient.js"
+import { isAdmin, ownerShip } from "./middleware/users_roles.js";
 
 
 const port = 8000

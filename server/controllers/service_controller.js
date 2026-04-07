@@ -16,7 +16,7 @@ export const getSingleService = async (req, res) => {
         console.log("PARAMS", req.params);
         const id = Number(req.params.id);
         const service = await prisma.service.findUnique({
-            where: { id }
+            where: {id}
         });
 
         if (!service) {

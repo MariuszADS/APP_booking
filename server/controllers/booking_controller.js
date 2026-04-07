@@ -13,7 +13,7 @@ export const getBooking = async (req, res) => {
 export const getSingleBooking = async (req, res) => {
     try {
         const id = Number(req.params.id)
-        const booking = await prisma.booking.findUnique({ where: { id } })
+        const booking = await prisma.booking.findUnique({ where: {id} })
         //below is the right pathern of handling single user/id/booking
         // const booking = await prisma.booking.findUnique({ where: { id: Number(req.params.id)} })
         if (!booking) {
@@ -21,12 +21,13 @@ export const getSingleBooking = async (req, res) => {
         }
         res.json(booking)
     }
-
-
+    
+    
     catch (error) {
         res.status(500).json({ message: error.message })
     }
-    console.log(req.body);
+    console.log("GET SINGLE",req.params.id);
+    // console.log(req.body);
 }
 
 export const createBooking = async (req, res) => {
