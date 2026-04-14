@@ -9,13 +9,11 @@ node_modules
 .vscode/*
 !.vscode/extensions.json
 xyz.txt
-start_from.txt
 err_status.txt
-URL,Query&Path_Paramethers.txt
+14_04_2026.txt
 
 #DB
 .env
 .env.*
-!.env.example   
 /generated/prisma
 server/server_without_express.js
