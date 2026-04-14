@@ -10,17 +10,20 @@ async function main() {
       {
         email:"test@test.com",
         name:"test",
-        role:"admin"
+        role:"admin",
+        password:"123"
       },
       {
         email: "adam@gmail.com",
         name: "Adam",
-        role: "user"
+        role: "user",
+        password:"321"
       },
       {
         email: "krzysiek@gmail.com",
         name: "Krzysztof",
-        role: "user"
+        role: "user",
+        password:"321"
       },
     ],
     skipDuplicates: true,
