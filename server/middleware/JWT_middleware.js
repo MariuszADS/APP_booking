@@ -3,9 +3,9 @@ import { verifyToken } from "../controllers/JWT_controller.js"
 
 //validating token and handling payload JWT by decode method
 const authenticateToken = (req, res, next) => {
-    //???
+    // created referance to header
     const authHeader = req.headers["authorization"]
-    //???
+    //divide token and take key as fist index
     const token = authHeader && authHeader.split(" ")[1]
     if (!token) {
         return res.status(403).json({ message: "Booking not found" })
@@ -21,10 +21,10 @@ const authenticateToken = (req, res, next) => {
 
 //role validation for admin
 const isAdmin = (req, res, next) => {
-    if (req.user.role !== "admin") {
-        res.status(403).json({ message: "Forbidden" })
-    }
-    console.log("Req handled by admin");
+    res.status(403).json({ message: "Forbidden" })
+}
+console.log("Req handled by admin");
+if (req.user.role !== "admin") {
     next()
 }
 //validation for ownership
