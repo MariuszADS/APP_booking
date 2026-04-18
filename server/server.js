@@ -6,6 +6,8 @@ import { getService, getSingleService, createService, deleteService } from "./co
 import { logger } from "./middleware/logger_middleware.js";
 import { connectDB } from "./db/prismaClient.js"
 import { isAdmin, ownerShip } from "./middleware/users_roles.js";
+import { login } from "./controllers/JWT_controller.js";
+import auth_routes from "./routes/auth_routes.js"
 
 
 const port = 8000
@@ -18,6 +20,8 @@ app.use(cors({ origin: 'http://localhost:5173' }));
 app.use(helmet())
 app.use(express.json())
 app.use(logger)
+// app.use(login)
+app.use("/auth",auth_routes)
 
 //err server handler
 app.use((err, req, res, next) => {
@@ -41,7 +45,9 @@ app.put("/booking/:id", editBooking)
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
+
 //404 error handler
 app.use((req, res) => {
+    console.log(req.body);
     res.status(404).json({ message: "not found" })
 })

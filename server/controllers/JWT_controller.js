@@ -1,38 +1,52 @@
-import jwt from "jsonwebtoken"
-import prisma from "../db/prismaClient";
-
+import jwt from "jsonwebtoken";
+import prisma from "../db/prismaClient.js";
+import bcrypt from "bcryptjs";
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret_key";
 
-//generated JWT based on userId and role, which expires in 24h
+// Generate JWT token
 const generateToken = (userId, role) => {
-    return jwt.sign({ id: userId, role: role }),
+    return jwt.sign(
+        { id: userId, role: role },
         JWT_SECRET,
         { expiresIn: "24h" }
-}
-//verifing token based on JWT_SECRET
+    );
+};
+
+// Verify token
 const verifyToken = (token) => {
     try {
-        return jwt.verify(token, JWT_SECRET)
+        return jwt.verify(token, JWT_SECRET);
     } catch (error) {
-        return null
+        return null;
     }
-}
+};
 
+// Login function
 const login = async (req, res, next) => {
-    const { email, password } = req.body
+    try {
+        const { email, password } = req.body;
 
-    const user = await prisma.user.findUnique({ where: { email } })
-    if (!user) { return res.status(401).json({ message: "Invalid credentials" }) }
+        // Find user by email
+        const user = await prisma.user.findUnique({ where: { email } });
+        if (!user) {
+            return res.status(401).json({ message: "Invalid credentials email" });
+        }
 
-    const inValidPassword = await prisma.user.findUnique({ where: { password } })
-    if (!inValidPassword) { return res.status(401).json({ message: "Invalid credentials" }) }
+        // Compare password with hashed password
+        // const password = req.body.password
+        const hashedPassword = await bcrypt.hash(password, 10)
+        const isValidPassword = await bcrypt.compare(password, hashedPassword);
+        if (!isValidPassword) {
+            return res.status(401).json({ message: "Invalid credentials password" });
+        }
 
-    const token = generateToken(user.id, user.role)
-    res.json({ token })
-}
+        // Generate token
+        const token = generateToken(user.id, user.role);
+        res.json({ token, userId: user.id, role: user.role });
+    } catch (error) {
+        next(error);
+    }
+};
 
-
-
-export { generateToken, verifyToken, login }
-
+export { generateToken, verifyToken, login };
