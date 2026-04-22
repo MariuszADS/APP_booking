@@ -33,8 +33,14 @@ const login = async (req, res, next) => {
             return res.status(401).json({ message: "Invalid credentials email" });
         }
 
+        const userPass = await prisma.user.findUnique({where:{password}})
+        if(userPass !== password){
+            return res.status(401).json({message:"Invalid credentials password"})
+        }
+
         // Compare password with hashed password
-        // const password = req.body.password
+        // const password_to_compare = req.body.password
+        //ERR DURING COMPARING HASHED_PASS TO PASS_USER
         const hashedPassword = await bcrypt.hash(password, 10)
         const isValidPassword = await bcrypt.compare(password, hashedPassword);
         if (!isValidPassword) {
