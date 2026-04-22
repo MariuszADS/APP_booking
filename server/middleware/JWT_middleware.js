@@ -1,5 +1,6 @@
 import prisma from "../db/prismaClient.js";
 import { verifyToken } from "../controllers/JWT_controller.js";
+
 // //validating token and handling payload JWT by decode method
 const authenticateToken = (req, res, next) => {
     // created referance to header
