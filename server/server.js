@@ -77,6 +77,7 @@ router.put("/:id", isAdmin, (req, res) => {
     res.json({ action: "Edited booking", id: req.params.id })
 })
 
+//LISENER
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
 })
