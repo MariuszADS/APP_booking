@@ -22,6 +22,38 @@ const verifyToken = (token) => {
     }
 };
 
+const register = async (req, res, next) => {
+    try {
+        const { email, password, name } = req.body
+
+        if (!email || !password || !name) {
+            return res.status(400).json({ message: "Email,name and password are required" })
+        }
+        const existingUser = await prisma.user.findUnique({ where: { email } })
+        if (existingUser) {
+            return res.status(409).json({ message: "User already  extist" })
+        }
+        const hashedPassword = await bcrypt.hash(password, 10)
+        const newUser = await prisma.user.create({
+            data: {
+                email,
+                name,
+                role: "user",
+                password: hashedPassword
+            }
+        })
+        return res.status(201).json({
+            id: newUser.id,
+            email: newUser.email,
+            name: newUser.name,
+        })
+    }
+    catch (error) {
+        next(error)
+    }
+
+}
+
 // Login function
 const login = async (req, res, next) => {
     try {
@@ -32,17 +64,8 @@ const login = async (req, res, next) => {
         if (!user) {
             return res.status(401).json({ message: "Invalid credentials email" });
         }
-
-        const userPass = await prisma.user.findUnique({where:{password}})
-        if(userPass !== password){
-            return res.status(401).json({message:"Invalid credentials password"})
-        }
-
-        // Compare password with hashed password
-        // const password_to_compare = req.body.password
-        //ERR DURING COMPARING HASHED_PASS TO PASS_USER
-        const hashedPassword = await bcrypt.hash(password, 10)
-        const isValidPassword = await bcrypt.compare(password, hashedPassword);
+        
+        const isValidPassword = await bcrypt.compare(password, user.password);
         if (!isValidPassword) {
             return res.status(401).json({ message: "Invalid credentials password" });
         }
@@ -55,4 +78,45 @@ const login = async (req, res, next) => {
     }
 };
 
-export { generateToken, verifyToken, login };
+export { generateToken, verifyToken,register, login };
+
+/*
+const register = async (req, res, next) => {
+    try {
+        const { email, name, password } = req.body;
+
+        if (!email || !name || !password) {
+            return res.status(400).json({ message: "Email, name and password are required" });
+        }
+
+        const existingUser = await prisma.user.findUnique({
+            where: { email }
+        });
+
+        if (existingUser) {
+            return res.status(409).json({ message: "User already exists" });
+        }
+
+        const hashedPassword = await bcrypt.hash(password, 10);
+
+        const newUser = await prisma.user.create({
+            data: {
+                email,
+                name,
+                role: "user",
+                password: hashedPassword
+            }
+        });
+
+        return res.status(201).json({
+            id: newUser.id,
+            email: newUser.email,
+            name: newUser.name,
+            role: newUser.role
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+*/
