@@ -7,7 +7,9 @@ function App() {
 
   const url = "http://localhost:8000/api/users"
   async function getStatus<T>(url: string): Promise<T> {
+
     const res = await fetch(url)
+
     if (!res.ok) {
       throw new Error(`HTTP error! status: ${res.status}`)
     }
@@ -16,9 +18,10 @@ function App() {
         console.error("ERR :", error);
       })
   }
+
   useEffect(() => {
     getStatus(url).then(data => { setStatus(data) })
-  },[])
+  }, [])
 
   return (
     <>

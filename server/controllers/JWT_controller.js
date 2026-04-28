@@ -29,13 +29,13 @@ const register = async (req, res, next) => {
         if (!email || !password || !name) {
             return res.status(400).json({ message: "Email,name and password are required" })
         }
-        
+
         const existingUser = await prisma.user.findUnique({ where: { email } })
-        
+
         if (existingUser) {
             return res.status(409).json({ message: "User already  extist" })
         }
-        
+
         const hashedPassword = await bcrypt.hash(password, 10)
         const newUser = await prisma.user.create({
             data: {
@@ -44,7 +44,7 @@ const register = async (req, res, next) => {
                 role: "user",
                 password: hashedPassword
             }
-        
+
         })
         return res.status(201).json({
             id: newUser.id,
@@ -82,18 +82,5 @@ const login = async (req, res, next) => {
     }
 };
 
-// const authenticateToken = (req, res, next) => {
-//     const authHeader = req.headers["authorization"]
-//     const token = authHeader && authHeader.split(" ")[1]
-//     if (!token) {
-//         return res.status(401).json({ message: "Access token required" })
-//     }
-//     const decoded = verifyToken(token)
-//     if (!decoded) {
-//         return res.status(403).json({ message: "Invalid or expired token" })
-//     }
-//     req.user = decoded
-//     next()
-// }
 
 export { generateToken, verifyToken, register, login };
