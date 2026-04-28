@@ -6,7 +6,8 @@ import { getService, getSingleService, createService, deleteService } from "./co
 import { logger } from "./middleware/logger_middleware.js";
 import { connectDB } from "./db/prismaClient.js"
 import { isAdmin, ownerShip } from "./middleware/users_roles.js";
-import { authenticateToken, login ,register} from "./controllers/JWT_controller.js";
+import { login ,register} from "./controllers/JWT_controller.js";
+import { authenticateToken} from "./middleware/JWT_middleware.js"
 
 const port = 8000
 const app = express()
@@ -24,7 +25,7 @@ app.use("/booking",authenticateToken)
 
 //AUTHORISATION
 router.post("/register",register)
-router.post("/login", login)
+router.post("/auth/login", login)
 
 /*SERVICE */
 app.get("/services", getService)
