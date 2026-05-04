@@ -1,0 +1,52 @@
+REGISTER FLOW – WYJAŚNIENIE KROK PO KROKU
+
+1.  STATE (useState)
+
+-   formData → przechowuje dane z inputów (email, password, name)
+-   error → przechowuje komunikat błędu
+-   success → przechowuje komunikat sukcesu
+-   isSubmitting → informuje czy trwa request (loading)
+
+2.  HANDLE CHANGE (event z inputa)
+
+-   event pochodzi z inputa (ChangeEvent)
+-   event.target zawiera:
+    -   name → nazwa pola (email, password, name)
+    -   value → aktualna wartość wpisana przez użytkownika
+-   setFormData:
+    -   …prev → kopiuje poprzedni stan
+    -   
+
+Efekt: Zmienia się tylko pole, które user edytuje.
+
+3.  HANDLE SUBMIT (wysłanie formularza)
+
+-   event.preventDefault() → blokuje reload strony
+-   setError(““) → czyści błędy
+-   setSuccess(““) → czyści sukces
+-   setIsSubmitting(true) → UI pokazuje loading
+
+4.  KOMUNIKACJA Z BACKEND
+
+-   registerUser(formData) wysyła POST request
+-   backend przetwarza dane
+-   frontend dostaje odpowiedź (user)
+
+5.  SUKCES
+
+-   setSuccess → pokazuje komunikat
+-   reset formData → czyści formularz
+
+6.  ERROR
+
+-   jeśli backend zwróci błąd:
+    -   catch przechwytuje error
+    -   setError ustawia komunikat
+
+7.  FINALLY
+
+-   setIsSubmitting(false)
+-   niezależnie od wyniku kończy loading
+
+FLOW: input → onChange → state update submit → handleSubmit → fetch →
+backend → response → UI update

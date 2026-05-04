@@ -8,9 +8,10 @@ node_modules
 # Editor directories and files
 .vscode/*
 !.vscode/extensions.json
-xyz.txt
 err_status.txt
-14_04_2026.txt
+Register.txt
+RegisterForm.tsx
+
 
 #DB
 .env

@@ -1,25 +1,31 @@
-import { useEffect, useState } from 'react'
-import './App.css'
-
-function Register() {
-
-  const [status, setStatus] = useState<any>(null)
-
-  const url = "http://localhost:8000/auth/register"
-
-  async function system(data,error,loading){
-
-    //DATA
-    const res = await fetch(url)
-    if(!res.ok){
-      throw new Error(`HTTP error! status: ${res.status}`) 
-    }else{
-      return JSON.stringify(res)
-    }
-    //ERROR
-    
-    //LOADING
-  }
+type RegisterData = {
+  email: string
+  password: string
+  name: string
 }
 
-export default Register
+type RegisterResponse = {
+  id: number
+  email: string
+  name: string
+}
+
+async function registerUser(formData: RegisterData): Promise<RegisterResponse> {
+  const res = await fetch("http://localhost:8000/auth/register", {
+    method: "POST",
+    headers: {
+      "Content-type": "application/json",
+    },
+    body: JSON.stringify(formData),
+  })
+
+  const data = await res.json()
+
+  if (!res.ok) {
+    throw new Error(data.message || "Register failed")
+  }
+
+  return data
+}
+
+export default registerUser
