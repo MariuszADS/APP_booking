@@ -7,6 +7,7 @@ type LoginResponse = {
     email: string,
     password: string
 }
+export type{LoginData,LoginResponse}
 
 async function loginUser(formData: LoginData): Promise<LoginResponse> {
     const res = await fetch("http://localhost:8000/auth/login", {

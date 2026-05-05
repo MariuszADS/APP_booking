@@ -35,7 +35,7 @@ function LoginForm() {
         try {
             const user = await loginUser(formData)
 
-            setSuccess(`User logged successfully`)
+            setSuccess(`User ${user} logged successfully`)
             setFormData({
                 email: "",
                 password: ""
@@ -87,8 +87,3 @@ function LoginForm() {
 
 export default LoginForm
 
-/*
-Kiedy tego używam?
-Co się stanie, jeśli tego nie użyję?
-Gdzie to wpinam w mojej aplikacji?
- */
