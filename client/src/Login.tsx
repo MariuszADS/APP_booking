@@ -17,7 +17,6 @@ async function loginUser(formData: LoginData): Promise<LoginResponse> {
         body:JSON.stringify(formData),
     })
     const data = await res.json()
-
     if(!res.ok){
         throw new Error(data.message || "Login failed")
     }
