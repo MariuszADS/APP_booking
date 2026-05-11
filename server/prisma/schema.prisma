@@ -14,6 +14,7 @@ model User {
   role     String
   password String    
   bookings Booking[]
+  resetTokens PasswordResetToken[]
 }
 
 model Service {
@@ -31,4 +32,12 @@ model Booking {
   comment   String?
   service   Service  @relation(fields: [serviceId], references: [id])
   user      User     @relation(fields: [userId], references: [id])
+}
+
+model PasswordResetToken{
+  id Int @id @default(autoincrement())
+  token String @unique
+  userId Int
+  expiresAt DateTime
+  createdAt DateTime @default(now())
 }
