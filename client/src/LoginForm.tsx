@@ -1,5 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from "react"
 import loginUser from "./Login"
+import ButtonResetPassword from "./ButtonResetPassword"
 
 type LoginFromData = {
     email: string,
@@ -81,6 +82,7 @@ function LoginForm() {
 
             {error && <p className="error">{error}</p>}
             {success && <p className="success">{success}</p>}
+            <ButtonResetPassword email={formData.email} />
         </div>
     )
 }
