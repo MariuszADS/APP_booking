@@ -1,6 +1,6 @@
 import { useState, type ChangeEvent, type FormEvent } from "react"
 import loginUser from "./Login"
-import ButtonResetPassword from "./ButtonResetPassword"
+import ButtonResetPassword from "./FormResetPassword"
 
 type LoginFromData = {
     email: string,

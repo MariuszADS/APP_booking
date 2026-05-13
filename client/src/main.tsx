@@ -3,10 +3,12 @@ import { BrowserRouter } from "react-router";
 import RegisterForm from './RegisterForm';
 import './index.css'
 import LoginForm from './LoginForm';
+import FormResetPassword from './FormResetPassword';
 
 createRoot(document.getElementById('root')!).render(
   <BrowserRouter>
-    <RegisterForm />
-    <LoginForm/>
+    {/* <RegisterForm />
+    <LoginForm/> */}
+    <FormResetPassword/>
   </BrowserRouter>,
 )
