@@ -10,25 +10,37 @@ function FormResetPassword() {
     function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
         setEmail(event.currentTarget.value)
     }
-    function handleSubmit(event: React.)
+    async function handleSubmit(event: React.FormEvent<HTMLFormElement>){
+        event.preventDefault()
+        await sendResetEmail(email)
+    }
 
 
 
     return (
         <>
-            <form target="_blank">
-                <input value={email} onChange={handleChange} placeholder="Email" />
-                <button type="button" onClick={}>Submit</button>
-            </form>
+            <form onSubmit={handleSubmit}>
+            <div>
+                <label htmlFor="reset-email">Email</label>
+                <input
+                    id="reset-email"
+                    type="email"
+                    value={email}
+                    onChange={handleChange}
+                    placeholder="Enter your email"
+                    required
+                />
+            </div>
 
-            <button type="button" onClick={ } disabled={isLoading}>
-                {isLoading ? "Sending..." : "Forgot password?"}
+            <button type="submit" disabled={isLoading}>
+                {isLoading ? "Sending..." : "Send reset link"}
             </button>
 
             {error && <p className="error">{error}</p>}
             {success && <p className="success">{success}</p>}
+        </form>
         </>
     )
 }
 
-export default FormResetPassword
+export default FormResetPassword    
