@@ -1,116 +1,91 @@
-import { type ChangeEvent, type FormEvent, useState } from "react"
+import { useState, type ChangeEvent, type FormEvent } from "react"
+import { Link, useNavigate } from "react-router"
 import registerUser from "./Register"
 
 type RegisterFormData = {
-  email: string
-  password: string
-  name: string
+    name: string
+    email: string
+    password: string
 }
 
 function RegisterForm() {
-
-  //user typing
-  const [formData, setFormData] = useState<RegisterFormData>({
-    email: "",
-    password: "",
-    name: "",
-  })
-
-  //useState
-  const [error, setError] = useState("")
-  const [success, setSuccess] = useState("")
-  const [isSubmitting, setIsSubmitting] = useState(false)
-
-  //event handler
-  function handleChange(event: ChangeEvent<HTMLInputElement>) {
-    const { name, value } = event.target
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]: value,
-    }))
-  }
-
-  async function handleSubmit(event: FormEvent<HTMLFormElement>) {
-    //blocking page reloading
-    event.preventDefault()
-    setError("")
-    setSuccess("")
-    //UI is wating for response
-    setIsSubmitting(true)
-
-    try {
-      const user = await registerUser(formData)
-
-      setSuccess(`User ${user.name} registered successfully`)
-      setFormData({
+    const navigate = useNavigate()
+    const [formData, setFormData] = useState<RegisterFormData>({
+        name: "",
         email: "",
         password: "",
-        name: "",
-      })
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Register failed")
-    } finally {
-      setIsSubmitting(false)
+    })
+    const [error, setError] = useState("")
+    const [isSubmitting, setIsSubmitting] = useState(false)
+
+    function handleChange(event: ChangeEvent<HTMLInputElement>) {
+        const { name, value } = event.target
+        setFormData((prev) => ({ ...prev, [name]: value }))
     }
-  }
 
-  return (
-    <div className="register-container">
-      <h2>Register</h2>
+    async function handleSubmit(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+        setError("")
+        setIsSubmitting(true)
 
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="email">Email</label>
-          <input
-            id="email"
-            type="email"
-            name="email"
-            placeholder="Enter email"
-            value={formData.email}
-            //update state
-            onChange={handleChange}
-            required
-          />
-        </div>
+        try {
+            await registerUser(formData)
+            navigate("/login")
+        } catch (err) {
+            setError(err instanceof Error ? err.message : "Register failed")
+        } finally {
+            setIsSubmitting(false)
+        }
+    }
 
-        <div>
-          <label htmlFor="password">Password</label>
-          <input
-            id="password"
-            type="password"
-            name="password"
-            placeholder="Enter password"
-            value={formData.password}
-            //update state
-            onChange={handleChange}
-            required
-          />
-        </div>
+    return (
+        <section className="auth-card">
+            <h1>Create account</h1>
+            <form onSubmit={handleSubmit}>
+                <label htmlFor="name">Name</label>
+                <input
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Your name"
+                    required
+                />
 
-        <div>
-          <label htmlFor="name">Name</label>
-          <input
-            id="name"
-            type="text"
-            name="name"
-            placeholder="Enter name"
-            value={formData.name}
-            //update state
-            onChange={handleChange}
-            required
-          />
-        </div>
+                <label htmlFor="register-email">Email</label>
+                <input
+                    id="register-email"
+                    type="email"
+                    name="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="Enter email"
+                    required
+                />
 
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Registering..." : "Register"}
-        </button>
-      </form>
+                <label htmlFor="register-password">Password</label>
+                <input
+                    id="register-password"
+                    type="password"
+                    name="password"
+                    value={formData.password}
+                    onChange={handleChange}
+                    placeholder="Minimum 6 characters"
+                    minLength={6}
+                    required
+                />
 
-      {error && <p className="error">{error}</p>}
-      {success && <p className="success">{success}</p>}
-    </div>
-  )
+                <button type="submit" disabled={isSubmitting}>
+                    {isSubmitting ? "Creating..." : "Create account"}
+                </button>
+            </form>
+
+            {error && <p className="error">{error}</p>}
+            <p className="muted">
+                Already registered? <Link to="/login">Log in</Link>
+            </p>
+        </section>
+    )
 }
 
 export default RegisterForm

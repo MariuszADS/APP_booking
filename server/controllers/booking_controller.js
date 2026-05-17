@@ -2,7 +2,21 @@ import prisma from "../db/prismaClient.js";
 
 export const getBooking = async (req, res) => {
     try {
-        const bookings = await prisma.booking.findMany();
+        const where = req.user?.role === "admin" ? {} : { userId: req.user.id };
+        const bookings = await prisma.booking.findMany({
+            where,
+            include: {
+                service: true,
+                user: {
+                    select: {
+                        id: true,
+                        name: true,
+                        email: true
+                    }
+                }
+            },
+            orderBy: { date: "asc" }
+        });
         res.json(bookings);
     } catch (error) {
         res.status(500).json({ message: error.message });
@@ -32,14 +46,25 @@ export const getSingleBooking = async (req, res) => {
 
 export const createBooking = async (req, res) => {
     try {
-        console.log("BODY:", req.body);
+        const { serviceId, date, comment } = req.body;
+
+        if (!serviceId || !date) {
+            return res.status(400).json({ message: "Service and date are required" });
+        }
+
+        const service = await prisma.service.findUnique({ where: { id: Number(serviceId) } });
+        if (!service) {
+            return res.status(404).json({ message: "Service not found" });
+        }
+
         const booking = await prisma.booking.create({
             data: {
-                userId: req.body.userId,
-                serviceId: req.body.serviceId,
-                date: new Date(req.body.date),
-                comment: req.body.comment || null
-            }
+                userId: req.user.id,
+                serviceId: Number(serviceId),
+                date: new Date(date),
+                comment: comment || null
+            },
+            include: { service: true }
         })
         res.status(201).json(booking)
     }
@@ -59,7 +84,9 @@ export const editBooking = async (req, res) => {
         const editedBooking = await prisma.booking.update({
             where: {id},
             data:{
-                comment:"new text"
+                serviceId: req.body.serviceId ? Number(req.body.serviceId) : booking.serviceId,
+                date: req.body.date ? new Date(req.body.date) : booking.date,
+                comment: req.body.comment ?? booking.comment
             }
         })
         res.status(200).json(editedBooking)

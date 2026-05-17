@@ -3,14 +3,23 @@ type LoginData = {
     password: string
 }
 type LoginResponse = {
-    id: number,
-    email: string,
-    password: string
+    token: string,
+    user: {
+        id: number,
+        email: string,
+        name: string,
+        role: string
+    }
+}
+type LegacyLoginResponse = {
+    token: string,
+    userId: number,
+    role: string
 }
 export type{LoginData,LoginResponse}
 
 async function loginUser(formData: LoginData): Promise<LoginResponse> {
-    const res = await fetch("http://localhost:8000/auth/login", {
+    const res = await fetch("http://127.0.0.1:8000/auth/login", {
         method: "POST",
         headers: { "Content-type": "application/json" 
         },
@@ -20,6 +29,21 @@ async function loginUser(formData: LoginData): Promise<LoginResponse> {
     if(!res.ok){
         throw new Error(data.message || "Login failed")
     }
-    return data
+
+    if (data.user) {
+        return data
+    }
+
+    const legacyData = data as LegacyLoginResponse
+
+    return {
+        token: legacyData.token,
+        user: {
+            id: legacyData.userId,
+            email: formData.email,
+            name: formData.email,
+            role: legacyData.role,
+        },
+    }
 }
 export default loginUser

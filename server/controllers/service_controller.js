@@ -32,6 +32,9 @@ export const getSingleService = async (req, res) => {
 
 export const createService = async (req, res) => {
     try {
+        if (!req.body.name) {
+            return res.status(400).json({ message: "Service name is required" })
+        }
         console.log("BODY:", req.body);
         const service = await prisma.service.create({
             data: {
@@ -39,7 +42,7 @@ export const createService = async (req, res) => {
                 comment: req.body.comment
             }
         })
-        res.json(service)
+        res.status(201).json(service)
     }
     catch (error) {
         res.status(500).json({ message: error.message })
@@ -64,12 +67,15 @@ export const createService = async (req, res) => {
 export const deleteService = async (req, res) => {
     try {
         const id = Number(req.params.id)
+        const existingService = await prisma.service.findUnique({ where: { id } })
+
+        if (!existingService) {
+            return res.status(404).json({ message: "service not found" })
+        }
+
         const service = await prisma.service.delete({
             where: { id }
         })
-        if (!service) {
-            return res.status(404).json({ message: "service not found" })
-        }
         res.json(service)
     }
     catch (error) {
@@ -78,4 +84,3 @@ export const deleteService = async (req, res) => {
     console.log("ID", req.params.id);
 
 }
-

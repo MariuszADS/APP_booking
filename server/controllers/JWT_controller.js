@@ -2,9 +2,12 @@ import jwt from "jsonwebtoken";
 import prisma from "../db/prismaClient.js";
 import bcrypt from "bcryptjs";
 import crypto from "crypto"
-import { error } from "console";
 
 const JWT_SECRET = process.env.JWT_SECRET || "secret_key";
+
+const isBcryptHash = (password) => {
+    return typeof password === "string" && password.startsWith("$2");
+};
 
 // Generate JWT token
 const generateToken = (userId, role) => {
@@ -26,10 +29,14 @@ const verifyToken = (token) => {
 
 const register = async (req, res, next) => {
     try {
-        const { email, password, name } = req.body
+        const { password, name } = req.body
+        const email = req.body.email?.trim().toLowerCase()
 
         if (!email || !password || !name) {
             return res.status(400).json({ message: "Email,name and password are required" })
+        }
+        if (password.length < 6) {
+            return res.status(400).json({ message: "Password must be at least 6 characters" })
         }
 
         const existingUser = await prisma.user.findUnique({ where: { email } })
@@ -63,22 +70,49 @@ const register = async (req, res, next) => {
 // Login function
 const login = async (req, res, next) => {
     try {
-        const { email, password } = req.body;
+        const { password } = req.body;
+        const email = req.body.email?.trim().toLowerCase();
+
+        if (!email || !password) {
+            return res.status(400).json({ message: "Email and password are required" });
+        }
 
         // Find user by email
         const user = await prisma.user.findUnique({ where: { email } });
         if (!user) {
-            return res.status(401).json({ message: "Invalid credentials email" });
+            return res.status(401).json({ message: "Invalid credentials" });
         }
 
-        const isValidPassword = await bcrypt.compare(password, user.password);
+        let isValidPassword = false;
+
+        if (isBcryptHash(user.password)) {
+            isValidPassword = await bcrypt.compare(password, user.password);
+        }
+
+        if (!isValidPassword && user.password === password) {
+            const hashedPassword = await bcrypt.hash(password, 10);
+            await prisma.user.update({
+                where: { id: user.id },
+                data: { password: hashedPassword }
+            });
+            isValidPassword = true;
+        }
+
         if (!isValidPassword) {
-            return res.status(401).json({ message: "Invalid credentials password" });
+            return res.status(401).json({ message: "Invalid credentials" });
         }
 
         // Generate token
         const token = generateToken(user.id, user.role);
-        res.json({ token, userId: user.id, role: user.role });
+        res.json({
+            token,
+            user: {
+                id: user.id,
+                email: user.email,
+                name: user.name,
+                role: user.role
+            }
+        });
     } catch (error) {
         next(error);
     }
@@ -103,16 +137,19 @@ const forgotPassword = async (req, res, next) => {
 
         await prisma.passwordResetToken.create({
             data: {
-                token,
+                token: resetToken,
                 userId: user.id,
                 expiresAt
             }
 
         })
 
-        console.log(`Reset link: https://localhost:5173/reset-password?token=${resetToken}`);
+        console.log(`Reset link: http://localhost:5173/reset-password?token=${resetToken}`);
 
-        return res.json({ message: "Reset token generated" })
+        return res.json({
+            message: "Reset token generated",
+            resetLink: `http://localhost:5173/reset-password?token=${resetToken}`
+        })
     }
     catch (error) {
         next(error)
@@ -128,6 +165,9 @@ const resetPassword = async (req, res, next) => {
 
         if (!token || !password) {
             return res.status(400).json({ message: "Token and password are required" })
+        }
+        if (password.length < 6) {
+            return res.status(400).json({ message: "Password must be at least 6 characters" })
         }
 
         const resetToken = await prisma.passwordResetToken.findUnique({
@@ -162,5 +202,3 @@ const resetPassword = async (req, res, next) => {
 
 
 export { generateToken, verifyToken, register, login, forgotPassword, resetPassword };
-
-
