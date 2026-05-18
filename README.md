@@ -18,4 +18,4 @@
 ## Run locally
 * 1.`npm install`
 * 2. to run client: `npm run dev`
-  3. to run server: `npm start`
+* 3. to run server: `npm start`     
