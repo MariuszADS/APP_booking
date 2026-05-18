@@ -1,4 +1,4 @@
-# Booking app (name_in_progress)
+# Booking app
 
 ## Tech Stack
 ### Client
